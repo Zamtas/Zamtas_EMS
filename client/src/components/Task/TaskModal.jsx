@@ -15,7 +15,7 @@ const TaskModal = ({ isOpen, onClose, taskDetails, onAdd, isViewOnly }) => {
         projectManager: '',
         startDate: '',
         endDate: '',
-        endTime: '', // New endTime field
+        endTime: '',
         assignedTo: [],
         teamLead: '',
         status: 'Assigned',
