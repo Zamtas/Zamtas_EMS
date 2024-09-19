@@ -15,7 +15,7 @@ const Home = () => {
 
     const handleLogout = () => {
         localStorage.removeItem('token');
-        navigate('/');
+        navigate('/'); //navigate to home
     };
 
     const renderContent = () => {
