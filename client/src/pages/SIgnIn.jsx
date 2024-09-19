@@ -17,7 +17,7 @@ const SignIn = () => {
             const response = await axios.post(Api.signIn.url, { email, password }, { withCredentials: true });
             if (response.data.success) {
                 const { token, role } = response.data.data;
-                localStorage.setItem('token', token);  // Save token to localStorage
+                localStorage.setItem('token', token);
                 if (role === 'ADMIN') {
                     navigate('/home');
                 } else {
