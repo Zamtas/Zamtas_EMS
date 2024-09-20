@@ -244,6 +244,8 @@ const TaskModal = ({ isOpen, onClose, taskDetails, onAdd, isViewOnly }) => {
                                         <option value="Installation">Installation</option>
                                         <option value="Maintenance">Maintenance</option>
                                         <option value="Repair">Repair</option>
+                                        <option value="AddCustom">Add Custom</option>
+
                                     </select>
                                 </label>
 
@@ -381,9 +383,6 @@ const TaskModal = ({ isOpen, onClose, taskDetails, onAdd, isViewOnly }) => {
                                         className="form-input mt-1 block w-full border-2 border-gray-500 focus:border-blue-700 focus:ring focus:ring-blue-300 bg-gray-50 text-gray-800 rounded-md shadow-md px-4 py-2 transition duration-150 ease-in-out hover:shadow-lg"
                                     >
                                         <option value="Assigned">Assigned</option>
-                                        <option value="In Progress">In Progress</option>
-                                        <option value="Delayed">Delayed</option>
-                                        <option value="Done">Done</option>
                                     </select>
                                 </label>
                             </div>
