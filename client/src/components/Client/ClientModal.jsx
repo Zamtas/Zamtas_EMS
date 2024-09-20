@@ -37,7 +37,7 @@ const ClientModal = ({ isOpen, onClose, onSave, onUpdate, clientData, modalType 
         const errors = {
             clientName: !/^[A-Za-z\s]+$/.test(clientName) ? 'Client Name should only contain alphabets and spaces.' : '',
             clientContact: !/^[0-9]+$/.test(clientContact) ? 'Client Contact should only contain numbers.' : '',
-            clientAddress: !/^[A-Za-z0-9\s.,-]+$/.test(clientAddress) ? 'Client Address should only contain alphanumeric characters, spaces, and special characters (.,-).' : '',
+            clientAddress: !/^[A-Za-z0-9\s.,-]+$/.test(clientAddress) ? 'Client Address should only contain alphanumeric characters' : '',
             clientEmail: !/^\S+@\S+\.\S+$/.test(clientEmail) ? 'Invalid email format.' : '',
             clientContactPerson: !/^[A-Za-z\s]+$/.test(clientContactPerson) ? 'Client Contact Person should only contain alphabets and spaces.' : '',
         };
