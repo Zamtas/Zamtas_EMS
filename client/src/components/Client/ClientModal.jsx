@@ -5,21 +5,28 @@ import { FaTimes } from 'react-icons/fa';
 import PropTypes from 'prop-types';
 
 const ClientModal = ({ isOpen, onClose, onSave, onUpdate, clientData, modalType }) => {
-    const [formData, setFormData] = useState({
+    const initialFormData = {
         clientName: '',
         clientContact: '',
         clientAddress: '',
         clientEmail: '',
         clientContactPerson: '',
-    });
+    };
+
+    const [formData, setFormData] = useState(initialFormData);
     const [error, setError] = useState('');
 
     useEffect(() => {
-        if (clientData) {
+        if (clientData && modalType === 'edit') {
             const { _id, __v, ...filteredData } = clientData;
             setFormData(filteredData);
+        } else if (modalType === 'add') {
+            // Reset form data and error when adding a new client
+            setFormData(initialFormData);
         }
-    }, [clientData]);
+        // Reset error whenever the modal opens
+        setError('');
+    }, [clientData, modalType, isOpen]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -29,11 +36,11 @@ const ClientModal = ({ isOpen, onClose, onSave, onUpdate, clientData, modalType 
     const validateForm = () => {
         const { clientName, clientContact, clientAddress, clientEmail, clientContactPerson } = formData;
         const errors = {
-            clientName: !/^[A-Za-z\s]+$/.test(clientName) ? "should only contain alphabets and spaces." : '',
-            clientContact: !/^[0-9]+$/.test(clientContact) ? "should only contain numbers." : '',
-            clientAddress: !/^[A-Za-z\s]+$/.test(clientAddress) ? "should only contain alphabets and spaces." : '',
+            clientName: !/^[A-Za-z\s]+$/.test(clientName) ? "Client Name should only contain alphabets and spaces." : '',
+            clientContact: !/^[0-9]+$/.test(clientContact) ? "Client Contact should only contain numbers." : '',
+            clientAddress: !/^[A-Za-z\s]+$/.test(clientAddress) ? "Client Address should only contain alphabets and spaces." : '',
             clientEmail: !/^\S+@\S+\.\S+$/.test(clientEmail) ? "Invalid email format." : '',
-            clientContactPerson: !/^[A-Za-z\s]+$/.test(clientContactPerson) ? "should only contain alphabets and spaces." : '',
+            clientContactPerson: !/^[A-Za-z\s]+$/.test(clientContactPerson) ? "Client Contact Person should only contain alphabets and spaces." : '',
         };
 
         const errorMessage = Object.values(errors).find(msg => msg) || '';

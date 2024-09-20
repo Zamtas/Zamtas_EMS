@@ -79,6 +79,8 @@ const Client = () => {
 
             {isLoading ? (
                 <Spinner />
+            ) : clients.length === 0 ? (
+                <p className="text-center text-gray-800 text-xl font-semibold py-10">No clients yet.</p>
             ) : (
                 <>
                     <ClientTable

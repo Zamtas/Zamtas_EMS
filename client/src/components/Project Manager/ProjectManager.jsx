@@ -91,40 +91,51 @@ const ProjectManagers = () => {
 
     return (
         <div className="p-6 bg-gray-50 rounded-lg shadow-md space-y-4">
-            <button
-                onClick={handleAddButtonClick} // Update button click handler
-                className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold py-2 px-6 rounded-lg shadow-sm transition-transform transform hover:scale-105 flex items-center"
-            >
-                <RiUserSettingsFill className="mr-2 text-xl" />
-                Add Project Manager
-            </button>
-            {isLoading ? (
-                <div className="flex justify-center items-center h-64">
-                    <Spinner />
-                </div>
-            ) : (
-                <>
-                    <ProjectManagerTable
-                        managers={currentManagers}
-                        onEdit={handleEditManager}
-                        onView={handleViewManager}
-                    />
-                    <Pagination
-                        currentPage={currentPage}
-                        totalPages={Math.ceil(managers.length / managersPerPage)}
-                        onPageChange={paginate}
-                    />
-                </>
-            )}
-            <ProjectManagerModal
-                isOpen={isModalOpen}
-                onClose={() => setModalOpen(false)}
-                onAdd={handleAddProjectManager}
-                onSave={handleSaveManager}
-                manager={currentManager}
-                mode={modalMode}
-            />
-        </div>
+        <button
+            onClick={handleAddButtonClick}
+            className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold py-2 px-6 rounded-lg shadow-sm transition-transform transform hover:scale-105 flex items-center"
+        >
+            <RiUserSettingsFill className="mr-2 text-xl" />
+            Add Project Manager
+        </button>
+    
+        {isLoading ? (
+            <div className="flex justify-center items-center h-64">
+                <Spinner />
+            </div>
+        ) : (
+            <>
+                {managers.length === 0 ? (
+                    <div className="text-center text-gray-800 text-xl font-semibold py-10">
+                        No project managers yet.
+                    </div>
+                ) : (
+                    <>
+                        <ProjectManagerTable
+                            managers={currentManagers}
+                            onEdit={handleEditManager}
+                            onView={handleViewManager}
+                        />
+                        <Pagination
+                            currentPage={currentPage}
+                            totalPages={Math.ceil(managers.length / managersPerPage)}
+                            onPageChange={paginate}
+                        />
+                    </>
+                )}
+            </>
+        )}
+    
+        <ProjectManagerModal
+            isOpen={isModalOpen}
+            onClose={() => setModalOpen(false)}
+            onAdd={handleAddProjectManager}
+            onSave={handleSaveManager}
+            manager={currentManager}
+            mode={modalMode}
+        />
+    </div>
+    
     );
 };
 

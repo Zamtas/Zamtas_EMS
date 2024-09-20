@@ -42,31 +42,40 @@ const Projects = () => {
 
     return (
         <div className="p-6 bg-gray-50 rounded-lg shadow-md space-y-4">
-            <button
-                className="bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white font-semibold py-2 px-6 rounded-lg shadow-sm transition-transform transform hover:scale-105 flex items-center"
-                onClick={() => setModalOpen(true)}
-            >
-                <FaPlusSquare className="mr-2 text-xl" />
-                Add New Project
-            </button>
-            {isLoading ? (
-                <div className="flex justify-center items-center h-64">
-                    <Spinner />
-                </div>
-            ) : (
-                <div className="overflow-x-auto">
+        <button
+            className="bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white font-semibold py-2 px-6 rounded-lg shadow-sm transition-transform transform hover:scale-105 flex items-center"
+            onClick={() => setModalOpen(true)}
+        >
+            <FaPlusSquare className="mr-2 text-xl" />
+            Add New Project
+        </button>
+        
+        {isLoading ? (
+            <div className="flex justify-center items-center h-64">
+                <Spinner />
+            </div>
+        ) : (
+            <div className="overflow-x-auto">
+                {projects.length === 0 ? (
+                    <div className="text-center text-gray-800 text-xl font-semibold py-10">
+                        No projects yet.
+                    </div>
+                ) : (
                     <ProjectsTable
                         projects={projects}
                         onUpdateProject={handleUpdateProject}
                     />
-                </div>
-            )}
-            <ProjectModal
-                isOpen={isModalOpen}
-                onClose={() => setModalOpen(false)}
-                onAdd={handleAddProject}
-            />
-        </div>
+                )}
+            </div>
+        )}
+        
+        <ProjectModal
+            isOpen={isModalOpen}
+            onClose={() => setModalOpen(false)}
+            onAdd={handleAddProject}
+        />
+    </div>
+    
     );
 };
 
