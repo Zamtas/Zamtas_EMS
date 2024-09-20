@@ -46,7 +46,7 @@ async function addTaskController(req, res) {
                 // Send WhatsApp notification
                 if (mobileNo) {
                     await client.messages.create({
-                        body: `Hello ${assignedUser.name}!. A new task of ${task.category} has been assigned to you. Kindly login to your portal. https://zamtas-ems.vercel.app`,
+                        body: `Hello ${assignedUser.name}!. A new task of ${task.category} has been assigned to you. Kindly login to your portal. https://zamtasems.vercel.app`,
                         from: twilioWhatsapp,
                         to: `whatsapp:${mobileNo}`
                     });
@@ -265,7 +265,7 @@ async function updateTaskController(req, res) {
                 // Send WhatsApp notification
                 if (mobileNo) {
                     await client.messages.create({
-                        body: `Hello ${assignedUser.name}! The task "${updatedTask.title}" has been updated. Kindly review the changes on the portal: https://zamtas-ems.vercel.app`,
+                        body: `Hello ${assignedUser.name}! The task "${updatedTask.title}" has been updated. Kindly review the changes on the portal: https://zamtasems.vercel.app`,
                         from: twilioWhatsapp,
                         to: `whatsapp:${mobileNo}`
                     });
