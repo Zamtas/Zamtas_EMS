@@ -5,6 +5,7 @@ const cloudinary = require('../config/cloudinary');
 const twilio = require('twilio');
 const moment = require('moment');
 const cron = require('node-cron');
+const Category = require('../models/categoryModel');
 const Notification = require('../models/notificationModel');
 
 const accountSid = process.env.ACCOUNT_SID;
@@ -13,19 +14,80 @@ const twilioNumber = process.env.TWILIO_NUM
 const twilioWhatsapp = process.env.TWILIO_WHATSAPP
 const client = twilio(accountSid, authToken);
 
+// Add a new category
+async function addCategoryController(req, res) {
+    try {
+        const { category } = req.body;
+        const newCategory = new Category({ name: category, isCustom: true });
+        await newCategory.save();
+
+        res.status(201).json({
+            message: 'Category added successfully',
+            data: newCategory.name,
+            success: true,
+            error: false
+        });
+    } catch (err) {
+        res.status(500).json({
+            message: err.message || 'Server Error',
+            error: true,
+            success: false
+        });
+    }
+}
+
+// Get all categories
+async function getCategoriesController(req, res) {
+    try {
+        const categories = await Category.find({ isCustom: true }).select('name');
+        res.status(200).json({
+            message: 'Categories fetched successfully',
+            data: categories.map(c => c.name),
+            success: true,
+            error: false
+        });
+    } catch (err) {
+        res.status(500).json({
+            message: err.message || 'Server Error',
+            error: true,
+            success: false
+        });
+    }
+}
+
+async function initializeDefaultCategories() {
+    const defaultCategories = ['Installation', 'Maintenance', 'Repair'];
+    for (const category of defaultCategories) {
+        await Category.findOneAndUpdate(
+            { name: category },
+            { name: category, isCustom: false },
+            { upsert: true, new: true, setDefaultsOnInsert: true }
+        );
+    }
+}
+
+initializeDefaultCategories(); // this is a function which is runnig to add or get custom cetegories
+
+
 // Add a new task
 async function addTaskController(req, res) {
     try {
         const { title, category, project, projectManager, startDate, endDate, endTime, assignedTo, teamLead } = req.body;
 
+        // Check if the category exists, if not, create it
+        let categoryDoc = await Category.findOne({ name: category });
+        if (!categoryDoc) {
+            categoryDoc = new Category({ name: category });
+            await categoryDoc.save();
+        }
+
         const task = new Task({
             title,
-            category,
+            category: categoryDoc.name,
             project,
             projectManager,
             startDate,
             endDate,
-            endTime: '',
             endTime,
             assignedTo,
             teamLead
@@ -353,5 +415,7 @@ module.exports = {
     startTaskController,
     completeTaskController,
     updateTaskController,
-    checkAndUpdateDelayedTasks
+    checkAndUpdateDelayedTasks,
+    addCategoryController,
+    getCategoriesController
 };

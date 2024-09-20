@@ -81,6 +81,14 @@ const Api = {
         url: `${backendDomain}/api/tasks`,
         method: "get"
     },
+    addCategory: {
+        url: `${backendDomain}/api/categories`,
+        method: 'POST' 
+    },
+    getCategories: {
+    url: `${backendDomain}/api/categories`,
+    method: 'GET' 
+    },
     updateTask: {
         url: `${backendDomain}/api/task/:taskId`,
         method: "put"

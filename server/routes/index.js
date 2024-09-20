@@ -8,7 +8,7 @@ const upload = require('../config/multer');
 const { addProjectController, getProjectsController, checkProjectIdController, updateProjectController } = require('../controller/projectController');
 const { addClientController, getClientsController, getClientByIdController, updateClientController } = require('../controller/clientController');
 const { addProjectManagerController, getProjectManagersController, getProjectManagerByIdController, updateProjectManagerController } = require('../controller/projectManagerController');
-const { addTaskController, getTasksController, getProjectDetailsController, getUserTasksController, completeTaskController, startTaskController, updateTaskController } = require('../controller/taskController');
+const { addTaskController, getTasksController, getProjectDetailsController, getUserTasksController, completeTaskController, startTaskController, updateTaskController, addCategoryController, getCategoriesController } = require('../controller/taskController');
 const authMiddleware = require('../middleware/authMiddleware');
 const auth = require('../middleware/auth');
 const { sendForgotPasswordOTP, resetPassword, verifyOTP } = require('../controller/forgotPasswordController');
@@ -44,6 +44,8 @@ router.get('/projectManagers/:managerId', getProjectManagerByIdController);
 router.post('/tasks', addTaskController);
 router.get('/tasks', getTasksController);
 router.get('/projects/:projectId', getProjectDetailsController);
+router.post('/categories', addCategoryController);
+router.get('/categories', getCategoriesController);
 
 
 router.get('/user-tasks', auth, getUserTasksController);

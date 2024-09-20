@@ -10,7 +10,7 @@ import moment from 'moment'
 const TaskModal = ({ isOpen, onClose, taskDetails, onAdd, isViewOnly }) => {
     const [task, setTask] = useState({
         title: '',
-        category: 'Installation',
+        category: '',
         project: '',
         projectManager: '',
         startDate: '',
@@ -26,6 +26,9 @@ const TaskModal = ({ isOpen, onClose, taskDetails, onAdd, isViewOnly }) => {
     const [projectManagers, setProjectManagers] = useState([]);
     const [employees, setEmployees] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [categories, setCategories] = useState(['Installation', 'Maintenance', 'Repair']);
+    const [isAddingCategory, setIsAddingCategory] = useState(false);
+    const [newCategory, setNewCategory] = useState('');
 
     useEffect(() => {
         if (isOpen && !isViewOnly) {
@@ -33,12 +36,14 @@ const TaskModal = ({ isOpen, onClose, taskDetails, onAdd, isViewOnly }) => {
             Promise.all([
                 axios.get(Api.getProject.url),
                 axios.get(Api.getProjectManager.url),
-                axios.get(Api.getEmployee.url)
-            ]).then(([projectsRes, managersRes, employeesRes]) => {
+                axios.get(Api.getEmployee.url),
+                axios.get(Api.getCategories.url)
+            ]).then(([projectsRes, managersRes, employeesRes, categoriesRes]) => {
                 setProjects(projectsRes.data.data || []);
                 setProjectManagers(managersRes.data.data || []);
                 const filteredEmployees = employeesRes.data.data.filter(emp => emp.role === ROLE.GENERAL);
                 setEmployees(filteredEmployees);
+                setCategories(['Installation', 'Maintenance', 'Repair', ...categoriesRes.data.data]);
             }).catch(err => console.error(err))
                 .finally(() => setLoading(false));
         } else if (taskDetails) {
@@ -48,7 +53,14 @@ const TaskModal = ({ isOpen, onClose, taskDetails, onAdd, isViewOnly }) => {
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setTask(prev => ({ ...prev, [name]: value }));
+        if (name === 'category' && value === 'add_custom') {
+            setIsAddingCategory(true);
+        } else {
+            setTask(prev => ({ ...prev, [name]: value }));
+            if (name === 'category') {
+                setIsAddingCategory(false);
+            }
+        }
     };
 
     const handleProjectChange = (e) => {
@@ -85,6 +97,19 @@ const TaskModal = ({ isOpen, onClose, taskDetails, onAdd, isViewOnly }) => {
             })
             .catch(err => console.error(err))
             .finally(() => setLoading(false));
+    };
+
+    const handleAddCategory = () => {
+        if (newCategory && !categories.includes(newCategory)) {
+            axios.post(Api.addCategory.url, { category: newCategory })
+                .then(res => {
+                    setCategories([...categories, res.data.data]);
+                    setTask(prev => ({ ...prev, category: res.data.data }));
+                    setNewCategory('');
+                    setIsAddingCategory(false);
+                })
+                .catch(err => console.error(err));
+        }
     };
 
     const getStatusColor = (status) => {
@@ -235,18 +260,39 @@ const TaskModal = ({ isOpen, onClose, taskDetails, onAdd, isViewOnly }) => {
 
                                 <label className="block">
                                     <span className="text-gray-700 font-medium mb-1 block">Category</span>
-                                    <select
-                                        name="category"
-                                        value={task.category}
-                                        onChange={handleChange}
-                                        className="form-input mt-1 block w-full border-2 border-gray-500 focus:border-blue-700 focus:ring focus:ring-blue-300 bg-gray-50 text-gray-800 rounded-md shadow-md px-4 py-2 transition duration-150 ease-in-out hover:shadow-lg"
-                                    >
-                                        <option value="Installation">Installation</option>
-                                        <option value="Maintenance">Maintenance</option>
-                                        <option value="Repair">Repair</option>
-                                        <option value="AddCustom">Add Custom</option>
-
-                                    </select>
+                                    {isAddingCategory ? (
+                                        <div className="flex items-center space-x-2">
+                                            <input
+                                                type="text"
+                                                value={newCategory}
+                                                onChange={(e) => setNewCategory(e.target.value)}
+                                                placeholder="Enter new category"
+                                                className="form-input mt-1 block w-full border-2 border-gray-500 focus:border-blue-700 focus:ring focus:ring-blue-300 bg-gray-50 text-gray-800 rounded-md shadow-md px-4 py-2 transition duration-150 ease-in-out hover:shadow-lg"
+                                            />
+                                            <button
+                                                type="button"
+                                                onClick={handleAddCategory}
+                                                className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition duration-150 ease-in-out"
+                                            >
+                                                Add
+                                            </button>
+                                        </div>
+                                    ) : (
+                                        <select
+                                            name="category"
+                                            value={task.category}
+                                            onChange={handleChange}
+                                            className="form-input mt-1 block w-full border-2 border-gray-500 focus:border-blue-700 focus:ring focus:ring-blue-300 bg-gray-50 text-gray-800 rounded-md shadow-md px-4 py-2 transition duration-150 ease-in-out hover:shadow-lg"
+                                        >
+                                            <option value="">Select a category</option>
+                                            {categories.map((category, index) => (
+                                                <option key={index} value={category}>
+                                                    {category}
+                                                </option>
+                                            ))}
+                                            <option value="add_custom">Add Custom Category</option>
+                                        </select>
+                                    )}
                                 </label>
 
                                 <label className="block">
