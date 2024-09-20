@@ -3,6 +3,7 @@ import axios from "axios";
 import Api from "../../common";
 import PropTypes from "prop-types";
 import Spinner from "../Spinner";
+import { IoSave } from "react-icons/io5";
 
 const AutoResizeTextarea = ({ value, onChange, type = "text" }) => {
   const textareaRef = useRef(null);
@@ -479,8 +480,9 @@ const ProductDetails = ({ projectId }) => {
       <div className="mt-4">
         <button
           onClick={handleSubmit}
-          className="bg-blue-600 text-white px-4 py-2 rounded no-print"
+          className="bg-blue-600 text-white px-4 py-2 rounded no-print flex items-center"
         >
+          <IoSave className="mr-2" />
           Save Details
         </button>
       </div>
