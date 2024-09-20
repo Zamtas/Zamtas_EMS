@@ -22,10 +22,8 @@ const ClientModal = ({ isOpen, onClose, onSave, onUpdate, clientData, modalType 
             const { _id, __v, ...filteredData } = clientData;
             setFormData(filteredData);
         } else if (modalType === 'add') {
-            // Reset form data and error when adding a new client
             setFormData(initialFormData);
         }
-        // Reset error whenever the modal opens
         setError('');
     }, [clientData, modalType, isOpen]);
 
