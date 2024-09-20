@@ -47,3 +47,9 @@
   padding: 8px; /* Padding inside input fields */
   box-sizing: border-box; /* Ensure padding and border are included in the width */
 }
+
+@media print {
+  .no-print {
+      display: none;
+  }
+}

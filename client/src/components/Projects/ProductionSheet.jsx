@@ -41,10 +41,6 @@ const ProductionSheet = () => {
                 ZAMTAS Product Sheet
             </h2>
 
-            <div className='text-gray-900 text-right'>
-                Last Updated By: admin
-            </div>
-
             <div className="border border-gray-300 mb-4">
                 {/* Client Information */}
                 <div className="flex">

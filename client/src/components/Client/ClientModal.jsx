@@ -17,7 +17,8 @@ const ClientModal = ({ isOpen, onClose, onSave, onUpdate, clientData, modalType 
     const [error, setError] = useState('');
 
     useEffect(() => {
-        if (clientData && modalType === 'edit') {
+        if (clientData && (modalType === 'edit' || modalType === 'view')) {
+            // Populate form with client data in 'edit' and 'view' modes
             const { _id, __v, ...filteredData } = clientData;
             setFormData(filteredData);
         } else if (modalType === 'add') {
@@ -30,20 +31,20 @@ const ClientModal = ({ isOpen, onClose, onSave, onUpdate, clientData, modalType 
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setFormData(prev => ({ ...prev, [name]: value }));
+        setFormData((prev) => ({ ...prev, [name]: value }));
     };
 
     const validateForm = () => {
         const { clientName, clientContact, clientAddress, clientEmail, clientContactPerson } = formData;
         const errors = {
-            clientName: !/^[A-Za-z\s]+$/.test(clientName) ? "Client Name should only contain alphabets and spaces." : '',
-            clientContact: !/^[0-9]+$/.test(clientContact) ? "Client Contact should only contain numbers." : '',
-            clientAddress: !/^[A-Za-z\s]+$/.test(clientAddress) ? "Client Address should only contain alphabets and spaces." : '',
-            clientEmail: !/^\S+@\S+\.\S+$/.test(clientEmail) ? "Invalid email format." : '',
-            clientContactPerson: !/^[A-Za-z\s]+$/.test(clientContactPerson) ? "Client Contact Person should only contain alphabets and spaces." : '',
+            clientName: !/^[A-Za-z\s]+$/.test(clientName) ? 'Client Name should only contain alphabets and spaces.' : '',
+            clientContact: !/^[0-9]+$/.test(clientContact) ? 'Client Contact should only contain numbers.' : '',
+            clientAddress: !/^[A-Za-z0-9\s.,-]+$/.test(clientAddress) ? 'Client Address should only contain alphanumeric characters, spaces, and special characters (.,-).' : '',
+            clientEmail: !/^\S+@\S+\.\S+$/.test(clientEmail) ? 'Invalid email format.' : '',
+            clientContactPerson: !/^[A-Za-z\s]+$/.test(clientContactPerson) ? 'Client Contact Person should only contain alphabets and spaces.' : '',
         };
 
-        const errorMessage = Object.values(errors).find(msg => msg) || '';
+        const errorMessage = Object.values(errors).find((msg) => msg) || '';
         return errorMessage;
     };
 
@@ -105,7 +106,7 @@ const ClientModal = ({ isOpen, onClose, onSave, onUpdate, clientData, modalType 
                             />
                         </div>
                     ))}
-                    {modalType !== 'view' && (
+                    {(modalType === 'add' || modalType === 'edit') && (
                         <div className="col-span-2 flex justify-end mt-6">
                             <button
                                 type="submit"
