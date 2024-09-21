@@ -442,7 +442,7 @@ const ProductDetails = ({ projectId }) => {
                       />
                     </td>
                     <td className="border border-black p-1">
-                      <AutoResizeTextarea
+                      <input
                         value={item.value}
                         onChange={(value) =>
                           handleAdditionalMaterialChange(
