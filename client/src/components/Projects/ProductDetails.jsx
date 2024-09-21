@@ -438,19 +438,20 @@ const ProductDetails = ({ projectId }) => {
                             "material",
                             value.target.value
                           )
-                        } // Update here
+                        }
                       />
                     </td>
                     <td className="border border-black p-1">
                       <input
                         value={item.value}
-                        onChange={(value) =>
+                        onChange={(value) => {
+                          const newValue = Math.max(0, value.target.value); // Ensure the value is not negative
                           handleAdditionalMaterialChange(
                             index,
                             "value",
-                            value.target.value
-                          )
-                        } // Update here
+                            newValue
+                          );
+                        }}
                         type="number"
                       />
                     </td>
