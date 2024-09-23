@@ -36,7 +36,7 @@ const AutoResizeTextarea = ({ value, onChange, type = "text" }) => {
   );
 };
 
-const ProductDetails = ({ projectId }) => {
+const ProductDetails = ({ projectId, setLastUpdatedBy }) => {
   const [productDetails, setProductDetails] = useState(null);
   const [loading, setLoading] = useState(true);
   const [doorPanel, setDoorPanel] = useState({
@@ -149,14 +149,17 @@ const ProductDetails = ({ projectId }) => {
 
   const handleSubmit = async () => {
     try {
+      const username = localStorage.getItem("username");
       const response = await axios.post(Api.saveSheet.url, {
         projectId,
         sheetData: productDetails || emptyProductDetails,
         doorPanel,
         additionalMaterial,
+        username,
       });
       if (response.data.success) {
         alert("Production sheet saved successfully");
+        setLastUpdatedBy(username); // Update the lastUpdatedBy state here
       } else {
         alert("Failed to save production sheet");
       }
@@ -499,6 +502,7 @@ AutoResizeTextarea.propTypes = {
 
 ProductDetails.propTypes = {
   projectId: PropTypes.string.isRequired,
+  setLastUpdatedBy: PropTypes.func.isRequired,
 };
 
 export default ProductDetails;

@@ -3,11 +3,13 @@ import PropTypes from "prop-types";
 import ProductDetails from "./ProductDetails";
 import logo from "../../assets/logo.png";
 import { IoArrowBack } from "react-icons/io5";
+import { useState } from "react";
 
 const ProductionSheet = () => {
   const { state } = useLocation();
   const project = state?.project;
   const navigate = useNavigate();
+  const [lastUpdatedBy, setLastUpdatedBy] = useState("N/A");
 
   const handleGoBack = () => {
     navigate(-1);
@@ -60,6 +62,10 @@ const ProductionSheet = () => {
           <IoArrowBack className="mr-2" />
           Go Back
         </button>
+      </div>
+
+      <div className="mb-4 text-sm text-gray-600">
+        Last updated by: {lastUpdatedBy}
       </div>
 
       <div className="border border-gray-300 mb-4">
@@ -203,7 +209,10 @@ const ProductionSheet = () => {
             />
           </div>
         </div>
-        <ProductDetails projectId={projectId} />
+        <ProductDetails
+          projectId={projectId}
+          setLastUpdatedBy={setLastUpdatedBy}
+        />
       </div>
     </div>
   );
