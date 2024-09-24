@@ -1,15 +1,20 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FaEdit, FaTrash, FaEye } from "react-icons/fa";
 import PropTypes from "prop-types";
 import TableFilter from "../TableFilter";
 
 const EmployeeTable = ({
-  employees,
+  employees, // This will automatically get updated from the parent component
   handleEditClick,
   handleDeleteClick,
   fetchUserDetails,
 }) => {
   const [filteredEmployees, setFilteredEmployees] = useState(employees);
+
+  // Update filtered employees when the employees prop changes
+  useEffect(() => {
+    setFilteredEmployees(employees);
+  }, [employees]);
 
   // Handle search and sort from the TableFilter component
   const handleSearch = (searchTerm) => {

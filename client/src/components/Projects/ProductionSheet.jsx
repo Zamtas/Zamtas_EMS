@@ -3,21 +3,13 @@ import PropTypes from "prop-types";
 import ProductDetails from "./ProductDetails";
 import logo from "../../assets/logo.png";
 import { IoArrowBack } from "react-icons/io5";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 const ProductionSheet = () => {
   const { state } = useLocation();
   const project = state?.project;
   const navigate = useNavigate();
   const [lastUpdatedBy, setLastUpdatedBy] = useState("");
-
-  useEffect(() => {
-    // Get the username from local storage when the component mounts
-    const storedUsername = localStorage.getItem("username");
-    if (storedUsername) {
-      setLastUpdatedBy(storedUsername);
-    }
-  }, []);
 
   const handleGoBack = () => {
     navigate(-1);
@@ -71,12 +63,6 @@ const ProductionSheet = () => {
           Go Back
         </button>
       </div>
-
-      {lastUpdatedBy && (
-        <div className="mb-4 text-base font-medium text-black text-right">
-          Last updated by: {lastUpdatedBy}
-        </div>
-      )}
 
       <div className="border border-gray-300 mb-4">
         {/* Client Information */}

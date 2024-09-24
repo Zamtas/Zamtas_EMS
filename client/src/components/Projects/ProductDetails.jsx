@@ -55,6 +55,7 @@ const ProductDetails = ({ projectId, setLastUpdatedBy }) => {
     { material: "", value: "" },
     { material: "", value: "" },
   ]);
+  const [lastUpdatedByUser, setLastUpdatedByUser] = useState("N/A");
 
   const emptyProductDetails = {
     productDetails: ["", ""],
@@ -90,6 +91,8 @@ const ProductDetails = ({ projectId, setLastUpdatedBy }) => {
               ];
               setAdditionalMaterial(updatedMaterial);
             }
+            setLastUpdatedByUser(response.data.data.lastUpdatedBy || "N/A");
+            setLastUpdatedBy(response.data.data.lastUpdatedBy || "N/A");
           } else {
             setProductDetails(null);
           }
@@ -106,7 +109,7 @@ const ProductDetails = ({ projectId, setLastUpdatedBy }) => {
     };
 
     fetchProductDetails();
-  }, [projectId]);
+  }, [projectId, setLastUpdatedBy]);
 
   const handleInputChange = (e, category, index) => {
     const updatedDetails = productDetails || emptyProductDetails;
@@ -159,7 +162,8 @@ const ProductDetails = ({ projectId, setLastUpdatedBy }) => {
       });
       if (response.data.success) {
         alert("Production sheet saved successfully");
-        setLastUpdatedBy(username); // Update the lastUpdatedBy state here
+        setLastUpdatedByUser(username);
+        setLastUpdatedBy(username);
       } else {
         alert("Failed to save production sheet");
       }
@@ -480,6 +484,10 @@ const ProductDetails = ({ projectId, setLastUpdatedBy }) => {
           </div>
         </div>
       </div>
+
+      <p className="mb-4 text-base font-medium text-black no-print">
+        Last updated by: {lastUpdatedByUser}
+      </p>
 
       <div className="mt-4">
         <button

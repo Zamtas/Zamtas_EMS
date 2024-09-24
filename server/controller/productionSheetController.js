@@ -2,7 +2,8 @@ const ProductionSheet = require("../models/productionSheetModel");
 
 async function saveProductionSheetController(req, res) {
   try {
-    const { projectId, sheetData, doorPanel, additionalMaterial } = req.body;
+    const { projectId, sheetData, doorPanel, additionalMaterial, username } =
+      req.body;
 
     let productionSheet = await ProductionSheet.findOne({ projectId });
 
@@ -14,6 +15,7 @@ async function saveProductionSheetController(req, res) {
       };
       productionSheet.doorPanel = doorPanel;
       productionSheet.additionalMaterial = additionalMaterial;
+      productionSheet.lastUpdatedBy = username;
     } else {
       // Create new sheet
       productionSheet = new ProductionSheet({
@@ -21,6 +23,7 @@ async function saveProductionSheetController(req, res) {
         sheetData,
         doorPanel,
         additionalMaterial,
+        lastUpdatedBy: username,
       });
     }
 

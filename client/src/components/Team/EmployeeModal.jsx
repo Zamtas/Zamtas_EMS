@@ -153,6 +153,12 @@ const EmployeeModal = ({
     setPreviewPicture("");
   };
 
+  const closeDetailsModal = () => {
+    setShowDetailsModal(false); // Close the details modal
+    setError(""); // Clear the error message when modal is closed
+    setUserDetails(null); // Reset user details
+  };
+
   return (
     <>
       {showForm && (
@@ -599,7 +605,7 @@ const EmployeeModal = ({
               </div>
             </form>
             <button
-              onClick={() => setShowDetailsModal(false)}
+              onClick={closeDetailsModal}
               className="absolute top-4 right-4 text-gray-500 hover:text-gray-800"
             >
               <FaTimes size={24} />

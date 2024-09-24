@@ -36,6 +36,10 @@ const ProductionSheetSchema = new mongoose.Schema({
       value: String,
     },
   ],
+  lastUpdatedBy: {
+    type: String,
+    default: "N/A",
+  },
   createdAt: {
     type: Date,
     default: Date.now,
