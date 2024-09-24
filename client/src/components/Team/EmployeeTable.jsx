@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import TableFilter from "../TableFilter";
 
 const EmployeeTable = ({
-  employees, // This will automatically get updated from the parent component
+  employees,
   handleEditClick,
   handleDeleteClick,
   fetchUserDetails,
