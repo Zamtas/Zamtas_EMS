@@ -1,8 +1,6 @@
 import { useState, useEffect } from "react";
 import { FaEdit, FaTrash, FaEye } from "react-icons/fa";
 import PropTypes from "prop-types";
-import TableFilter from "../TableFilter";
-
 const EmployeeTable = ({
   employees,
   handleEditClick,
@@ -16,32 +14,8 @@ const EmployeeTable = ({
     setFilteredEmployees(employees);
   }, [employees]);
 
-  // Handle search and sort from the TableFilter component
-  const handleSearch = (searchTerm) => {
-    const filtered = employees.filter((employee) =>
-      employee.name.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-    setFilteredEmployees(filtered);
-  };
-
-  const handleSort = (order) => {
-    const sorted = [...filteredEmployees].sort((a, b) => {
-      const nameA = a.name.toLowerCase();
-      const nameB = b.name.toLowerCase();
-      return order === "asc"
-        ? nameA < nameB
-          ? -1
-          : 1
-        : nameA > nameB
-        ? -1
-        : 1;
-    });
-    setFilteredEmployees(sorted);
-  };
-
   return (
     <div>
-      <TableFilter onSearch={handleSearch} onSort={handleSort} />
       <table className="min-w-full bg-white border border-gray-300 rounded-lg shadow-lg mt-4">
         <thead className="bg-gray-200 text-gray-800 uppercase text-sm font-semibold">
           <tr>

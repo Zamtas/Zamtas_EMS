@@ -7,9 +7,12 @@ import EmployeeModal from "./EmployeeModal";
 import EmployeeTable from "./EmployeeTable";
 import Pagination from "../Pagination";
 import ROLE from "../../common/role";
+import TableFilter from "../TableFilter";
 
 const Employees = () => {
   const [employees, setEmployees] = useState([]);
+  const [filteredEmployees, setFilteredEmployees] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
   const [userDetails, setUserDetails] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [showDetailsModal, setShowDetailsModal] = useState(false);
@@ -32,6 +35,7 @@ const Employees = () => {
       const response = await axios.get(Api.getEmployee.url);
       if (response.data.success) {
         setEmployees(response.data.data);
+        setFilteredEmployees(response.data.data); // Initially, filtered employees are all employees
       } else {
         setError("Failed to fetch employees.");
       }
@@ -40,6 +44,31 @@ const Employees = () => {
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const handleSearch = (term) => {
+    setSearchTerm(term);
+    const filtered = employees.filter((employee) =>
+      employee.name.toLowerCase().includes(term.toLowerCase())
+    );
+    setFilteredEmployees(filtered);
+    setCurrentPage(1); // Reset to the first page after filtering
+  };
+
+  const handleSort = (order) => {
+    const sorted = [...filteredEmployees].sort((a, b) => {
+      const nameA = a.name.toLowerCase();
+      const nameB = b.name.toLowerCase();
+      return order === "asc"
+        ? nameA < nameB
+          ? -1
+          : 1
+        : nameA > nameB
+        ? -1
+        : 1;
+    });
+    setFilteredEmployees(sorted);
+    setCurrentPage(1); // Reset to the first page after sorting
   };
 
   const fetchUserDetails = async (id) => {
@@ -121,13 +150,12 @@ const Employees = () => {
   // Pagination logic
   const indexOfLastEmployee = currentPage * employeesPerPage;
   const indexOfFirstEmployee = indexOfLastEmployee - employeesPerPage;
-  const currentEmployees = employees.slice(
+  const currentEmployees = filteredEmployees.slice(
     indexOfFirstEmployee,
     indexOfLastEmployee
   );
-  const totalPages = Math.ceil(employees.length / employeesPerPage);
+  const totalPages = Math.ceil(filteredEmployees.length / employeesPerPage);
 
-  // Handle page change
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   return (
@@ -178,6 +206,7 @@ const Employees = () => {
           </div>
         </div>
       )}
+      <TableFilter onSearch={handleSearch} onSort={handleSort} />
 
       {isLoading ? (
         <Spinner />
