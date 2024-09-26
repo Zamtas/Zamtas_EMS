@@ -150,6 +150,10 @@ const ProductDetails = ({ projectId, setLastUpdatedBy }) => {
     setAdditionalMaterial(updatedMaterial);
   };
 
+  const handleApprove = () => {
+    alert("Production sheet Approved and Saved Successfully!");
+  };
+
   const handleSubmit = async () => {
     try {
       const username = localStorage.getItem("username");
@@ -161,7 +165,7 @@ const ProductDetails = ({ projectId, setLastUpdatedBy }) => {
         username,
       });
       if (response.data.success) {
-        alert("Production sheet saved successfully");
+        alert("Production sheet submitted for review successfully");
         setLastUpdatedByUser(username);
         setLastUpdatedBy(username);
       } else {
@@ -489,13 +493,20 @@ const ProductDetails = ({ projectId, setLastUpdatedBy }) => {
         Last updated by: {lastUpdatedByUser}
       </p>
 
-      <div className="mt-4">
+      <div className="mt-4 flex space-x-4 mb-4">
         <button
-          onClick={handleSubmit}
+          onClick={handleApprove}
           className="bg-blue-600 text-white px-4 py-2 rounded no-print flex items-center"
         >
           <IoSave className="mr-2" />
-          Save Sheet
+          Approve & Save Sheet
+        </button>
+        <button
+          onClick={handleSubmit}
+          className="border border-blue-600 bg-white text-blue-600 hover:text-white hover:bg-blue-600 px-4 py-2 rounded no-print flex items-center"
+        >
+          <IoSave className="mr-2" />
+          Submit for review
         </button>
       </div>
     </>
