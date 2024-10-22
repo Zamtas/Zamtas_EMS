@@ -59,11 +59,41 @@ const Home = () => {
             <li className="mb-4">
               <button
                 className={`w-full text-left py-2 px-4 rounded ${
+                  activeMenu === "projects" ? "bg-gray-700" : ""
+                }`}
+                onClick={() => setActiveMenu("projects")}
+              >
+                Projects
+              </button>
+            </li>
+            <li className="mb-4">
+              <button
+                className={`w-full text-left py-2 px-4 rounded ${
+                  activeMenu === "tasks" ? "bg-gray-700" : ""
+                }`}
+                onClick={() => setActiveMenu("tasks")}
+              >
+                Tasks
+              </button>
+            </li>
+            <li className="mb-4">
+              <button
+                className={`w-full text-left py-2 px-4 rounded ${
                   activeMenu === "customer" ? "bg-gray-700" : ""
                 }`}
                 onClick={() => setActiveMenu("customer")}
               >
                 Customer
+              </button>
+            </li>
+            <li className="mb-4">
+              <button
+                className={`w-full text-left py-2 px-4 rounded ${
+                  activeMenu === "Team" ? "bg-gray-700" : ""
+                }`}
+                onClick={() => setActiveMenu("Team")}
+              >
+                Teams
               </button>
             </li>
             <li className="mb-4">
@@ -84,37 +114,6 @@ const Home = () => {
                 onClick={() => setActiveMenu("inventory")}
               >
                 Inventory Management
-              </button>
-            </li>
-            <li className="mb-4">
-              <button
-                className={`w-full text-left py-2 px-4 rounded ${
-                  activeMenu === "projects" ? "bg-gray-700" : ""
-                }`}
-                onClick={() => setActiveMenu("projects")}
-              >
-                Projects
-              </button>
-            </li>
-
-            <li className="mb-4">
-              <button
-                className={`w-full text-left py-2 px-4 rounded ${
-                  activeMenu === "Team" ? "bg-gray-700" : ""
-                }`}
-                onClick={() => setActiveMenu("Team")}
-              >
-                Teams
-              </button>
-            </li>
-            <li className="mb-4">
-              <button
-                className={`w-full text-left py-2 px-4 rounded ${
-                  activeMenu === "tasks" ? "bg-gray-700" : ""
-                }`}
-                onClick={() => setActiveMenu("tasks")}
-              >
-                Tasks
               </button>
             </li>
           </ul>

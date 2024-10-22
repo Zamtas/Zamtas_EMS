@@ -222,7 +222,7 @@ const TaskModal = ({ isOpen, onClose, taskDetails, onAdd, isViewOnly }) => {
               </div>
 
               <div className="flex items-center justify-between text-lg">
-                <span className="text-gray-700 font-bold">Due Date:</span>
+                <span className="text-gray-700 font-bold">Done at:</span>
                 <span className="text-gray-900 font-medium">
                   {moment(task.endDate).format("LL")}
                 </span>

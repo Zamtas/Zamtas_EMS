@@ -25,8 +25,8 @@ const TaskTable = ({ tasks, onView, onEdit, showEdit = true }) => {
   const truncateText = (text) => {
     if (typeof text !== "string") return "";
     const words = text.split(" ");
-    if (words.length > 1) {
-      return `${words[0]}...`;
+    if (words.length > 4) {
+      return `${words.slice(0, 3).join(" ")}...`;
     }
     return text;
   };
@@ -58,32 +58,20 @@ const TaskTable = ({ tasks, onView, onEdit, showEdit = true }) => {
         <p className="text-gray-900 text-center mt-4">No tasks found.</p>
       ) : (
         <table className="min-w-full bg-white border border-gray-300 rounded-lg shadow-lg mt-5">
-          <thead className="bg-gray-200 text-gray-800 uppercase text-sm font-semibold">
+          <thead className="bg-gray-200 text-gray-800 uppercase text-sm font-semibold text-center">
             <tr>
-              <th className="py-2 px-3 border-b border-gray-300 text-left">
-                Title
-              </th>
-              <th className="py-2 px-3 border-b border-gray-300 text-left">
-                Category
-              </th>
-              <th className="py-2 px-3 border-b border-gray-300 text-left">
-                Project
-              </th>
-              <th className="py-2 px-3 border-b border-gray-300 text-left">
+              <th className="py-2 px-3 border-b border-gray-300">Project</th>
+              <th className="py-2 px-3 border-b border-gray-300">Task</th>
+              <th className="py-2 px-3 border-b border-gray-300">Category</th>
+              <th className="py-2 px-3 border-b border-gray-300">
                 Project Manager
               </th>
-              <th className="py-2 px-3 border-b border-gray-300 text-left">
-                Team Lead
-              </th>
-              <th className="py-2 px-3 border-b border-gray-300 text-left">
-                Status
-              </th>
-              <th className="py-2 px-3 border-b border-gray-300 text-left">
-                Actions
-              </th>
+              <th className="py-2 px-3 border-b border-gray-300">Team Lead</th>
+              <th className="py-2 px-3 border-b border-gray-300">Status</th>
+              <th className="py-2 px-3 border-b border-gray-300">Actions</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody className="text-center">
             {filteredTasks.map((task) => (
               <tr
                 key={task._id}
@@ -92,13 +80,13 @@ const TaskTable = ({ tasks, onView, onEdit, showEdit = true }) => {
                 } hover:bg-gray-100`}
               >
                 <td className="py-3 px-3 border-b border-gray-300 text-base">
+                  {truncateText(task.project?.projectName) || "N/A"}
+                </td>
+                <td className="py-3 px-3 border-b border-gray-300 text-base">
                   {truncateText(task.title) || "N/A"}
                 </td>
                 <td className="py-3 px-3 border-b border-gray-300 text-base">
                   {task.category || "N/A"}
-                </td>
-                <td className="py-3 px-3 border-b border-gray-300 text-base">
-                  {truncateText(task.project?.projectName) || "N/A"}
                 </td>
                 <td className="py-3 px-3 border-b border-gray-300 text-base">
                   {truncateText(task.projectManager?.name) || "N/A"}

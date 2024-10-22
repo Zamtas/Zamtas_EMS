@@ -63,7 +63,7 @@ const ProjectsTable = () => {
     setSelectedProject(null);
   };
 
-  const truncateText = (text, maxWords = 1) => {
+  const truncateText = (text, maxWords = 3) => {
     if (typeof text !== "string") return "";
     const words = text.split(" ");
     return words.length > maxWords
