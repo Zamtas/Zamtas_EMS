@@ -35,7 +35,8 @@ const ClientTable = ({ clients, onView, onEdit }) => {
 
   const truncateText = (text) => {
     if (typeof text !== "string") return "";
-    return text.split(" ").length > 1 ? `${text.split(" ")[0]}...` : text;
+    const words = text.split(" ");
+    return words.length > 3 ? `${words.slice(0, 3).join(" ")}...` : text;
   };
 
   return (
