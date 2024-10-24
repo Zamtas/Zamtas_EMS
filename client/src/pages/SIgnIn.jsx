@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { FaEye, FaEyeSlash, FaSpinner } from "react-icons/fa"; // Import FaSpinner for the spinner icon
 import Api from "../common/index";
 
 const SignIn = () => {
@@ -9,10 +9,13 @@ const SignIn = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false); // Add loading state
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true); // Set loading to true when the form is submitted
+    setError(""); // Clear any previous error message
     try {
       const response = await axios.post(
         Api.signIn.url,
@@ -38,6 +41,8 @@ const SignIn = () => {
       setError(
         err.response ? err.response.data.message : "Something went wrong"
       );
+    } finally {
+      setLoading(false); // Set loading to false after the request is completed
     }
   };
 
@@ -103,9 +108,14 @@ const SignIn = () => {
           {error && <p className="text-red-500 text-sm">{error}</p>}
           <button
             type="submit"
-            className="w-full py-2 bg-blue-600 text-white rounded-lg shadow-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300"
+            className="w-full py-2 bg-blue-600 text-white rounded-lg shadow-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300 flex justify-center items-center"
+            disabled={loading} // Disable button while loading
           >
-            Sign In
+            {loading ? (
+              <FaSpinner className="animate-spin mr-2" /> // Show spinner when loading
+            ) : (
+              "Sign In"
+            )}
           </button>
         </form>
         <div className="mt-4 text-center">
