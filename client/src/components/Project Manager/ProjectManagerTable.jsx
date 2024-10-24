@@ -1,11 +1,16 @@
 import PropTypes from "prop-types";
 import { FaEye, FaEdit } from "react-icons/fa";
 import TableFilter from "../TableFilter";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const ProjectManagerTable = ({ managers, onEdit, onView }) => {
   const [filteredManagers, setFilteredManagers] = useState(managers);
   const [sortOrder, setSortOrder] = useState("asc");
+
+  useEffect(() => {
+    // This useEffect ensures that whenever the `managers` prop updates (e.g., when a new manager is added), the table is updated
+    setFilteredManagers(managers);
+  }, [managers]);
 
   const truncateText = (text) => {
     if (typeof text !== "string") return "";

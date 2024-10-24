@@ -1,5 +1,7 @@
 import PropTypes from "prop-types";
 import { useEffect, useState } from "react";
+import Api from "../../common/index";
+import axios from "axios";
 import {
   FaBuilding,
   FaEnvelope,
@@ -22,7 +24,39 @@ const ProjectManagerModal = ({
     email: "",
     department: "",
   });
+  const [managers, setManagers] = useState([]); // State for the list of project managers
+  const [loading, setLoading] = useState(false);
 
+  // Fetch employees and filter for managers
+  useEffect(() => {
+    const fetchManagers = async () => {
+      try {
+        setLoading(true);
+        const response = await axios.get(Api.getEmployee.url); // Fetching employees
+        const allEmployees = response.data.data; // Access the employees array from API response
+
+        // Filter employees based on role or designation (adjust as necessary)
+        const managerList = allEmployees.filter(
+          (employee) =>
+            employee.role === "ADMIN" ||
+            employee.designation.includes("Manager")
+        );
+
+        setManagers(managerList || []); // Set filtered managers or an empty array
+      } catch (error) {
+        console.error("Error fetching project managers", error);
+        setManagers([]); // Ensure empty array on error
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (mode === "add") {
+      fetchManagers(); // Fetch managers only in 'add' mode
+    }
+  }, [mode]);
+
+  // Populate form data when manager changes or modal opens
   useEffect(() => {
     if (mode === "edit" || mode === "view") {
       setFormData({
@@ -32,7 +66,6 @@ const ProjectManagerModal = ({
         department: manager?.department || "",
       });
     } else {
-      // Clear form data for 'add' mode
       setFormData({
         name: "",
         contact: "",
@@ -91,7 +124,6 @@ const ProjectManagerModal = ({
         {/* View Mode Specific Styles */}
         {mode === "view" ? (
           <div className="space-y-8">
-            {/* Name Section */}
             <div className="p-4 rounded-lg shadow-lg border border-gray-200 bg-gray-50">
               <div className="flex items-center space-x-2">
                 <FaUser className="text-gray-500" />
@@ -101,8 +133,6 @@ const ProjectManagerModal = ({
                 {formData.name || "N/A"}
               </p>
             </div>
-
-            {/* Contact Section */}
             <div className="p-4 rounded-lg shadow-lg border border-gray-200 bg-gray-50">
               <div className="flex items-center space-x-2">
                 <FaPhone className="text-gray-500" />
@@ -112,8 +142,6 @@ const ProjectManagerModal = ({
                 {formData.contact || "N/A"}
               </p>
             </div>
-
-            {/* Email Section */}
             <div className="p-4 rounded-lg shadow-lg border border-gray-200 bg-gray-50">
               <div className="flex items-center space-x-2">
                 <FaEnvelope className="text-gray-500" />
@@ -123,8 +151,6 @@ const ProjectManagerModal = ({
                 {formData.email || "N/A"}
               </p>
             </div>
-
-            {/* Department Section */}
             <div className="p-4 rounded-lg shadow-lg border border-gray-200 bg-gray-50">
               <div className="flex items-center space-x-2">
                 <FaBuilding className="text-gray-500" />
@@ -139,14 +165,31 @@ const ProjectManagerModal = ({
           <form className="space-y-4">
             <div>
               <label className="block text-gray-700 font-medium">Name</label>
-              <input
-                type="text"
-                name="name"
-                value={formData.name}
-                onChange={handleChange}
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                readOnly={mode === "view"}
-              />
+              {mode === "add" ? (
+                <select
+                  name="name"
+                  value={formData.name}
+                  onChange={handleChange}
+                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
+                >
+                  <option value="">Select Project Manager</option>
+                  {!loading &&
+                    managers.map((mgr) => (
+                      <option key={mgr._id} value={mgr.name}>
+                        {mgr.name} ({mgr.designation})
+                      </option>
+                    ))}
+                </select>
+              ) : (
+                <input
+                  type="text"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleChange}
+                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                  readOnly={mode === "view"}
+                />
+              )}
             </div>
             <div>
               <label className="block text-gray-700 font-medium">Contact</label>
@@ -225,8 +268,8 @@ ProjectManagerModal.propTypes = {
   onClose: PropTypes.func.isRequired,
   onAdd: PropTypes.func.isRequired,
   onSave: PropTypes.func.isRequired,
-  manager: PropTypes.object,
-  mode: PropTypes.oneOf(["view", "edit", "add"]).isRequired, // Add 'add' mode
+  manager: PropTypes.oneOfType([PropTypes.object, PropTypes.oneOf([null])]), // Allow manager to be an object or null
+  mode: PropTypes.oneOf(["view", "edit", "add"]).isRequired,
 };
 
 export default ProjectManagerModal;
