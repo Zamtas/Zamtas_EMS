@@ -93,7 +93,7 @@ const Home = () => {
                 }`}
                 onClick={() => setActiveMenu("Team")}
               >
-                Teams
+                Staff / Employees
               </button>
             </li>
             <li className="mb-4">

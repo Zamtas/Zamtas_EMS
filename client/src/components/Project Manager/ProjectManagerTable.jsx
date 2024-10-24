@@ -10,7 +10,7 @@ const ProjectManagerTable = ({ managers, onEdit, onView }) => {
   const truncateText = (text) => {
     if (typeof text !== "string") return "";
     const words = text.split(" ");
-    return words.length > 1 ? `${words[0]}...` : text;
+    return words.length > 3 ? `${words.slice(0, 3).join(" ")}...` : text;
   };
 
   const handleSearch = (searchTerm) => {
